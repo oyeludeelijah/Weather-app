@@ -56,6 +56,8 @@ I'm using the completely free [Open-Meteo APIs](https://open-meteo.com/). Those 
 
 ## My process
 
+**Fair warning:** This entire project was vibe-coded with Cursor AI. I basically had a conversation with my AI coding buddy and we built this thing together. Is that cheating? Maybe. Do I care? Not really. The future is now, old man. 🤖
+
 ### Built with
 
 **The classics:**
@@ -75,14 +77,16 @@ I'm using the completely free [Open-Meteo APIs](https://open-meteo.com/). Those 
 
 ### What I learned
 
-**The hard way:**
-- If you keep converting temperature values back and forth between Celsius and Fahrenheit by reading them from the DOM, you'll end up with numbers that make absolutely no sense. Solution? Keep a "canonical state" in metric and convert on render. Mind = blown. 🤯
+**Things Cursor and I figured out together:**
+- If you keep converting temperature values back and forth between Celsius and Fahrenheit by reading them from the DOM, you'll end up with numbers that make absolutely no sense. Solution? Keep a "canonical state" in metric and convert on render. Cursor explained this to me three times before it clicked. 🤯
 
-- `AbortController` is a lifesaver when users type faster than your API can respond. Without it, you get a beautiful race condition where "New York" shows weather for "New" instead. Ask me how I know.
+- `AbortController` is a lifesaver when users type faster than your API can respond. Without it, you get a beautiful race condition where "New York" shows weather for "New" instead. I discovered this bug, Cursor fixed it, and we both pretended it never happened.
 
-- ARIA roles aren't just fancy attributes to make your HTML look smart. Turns out screen reader users actually need them! Who knew? (Everyone. Everyone knew. I learned this the hard way.)
+- ARIA roles aren't just fancy attributes to make your HTML look smart. Turns out screen reader users actually need them! I asked Cursor to "make it accessible" and it taught me a whole masterclass on WAI-ARIA patterns. Best. Pair. Programming. Partner.
 
-- Weather codes from Open-Meteo are just numbers (like 0, 45, 95). Mapping those to actual icons? That's where the real detective work began. Pro tip: 95 = thunderstorm, not a sunny day. ⛈️
+- Weather codes from Open-Meteo are just numbers (like 0, 45, 95). Mapping those to actual icons? That's where Cursor pulled out the weather code documentation faster than I could Google it. Pro tip we learned: 95 = thunderstorm, not a sunny day. ⛈️
+
+**Real talk:** Pair programming with AI is wild. It's like having a senior dev who never gets tired, never judges your silly questions, and is always down to refactor at 3 AM. 10/10 would recommend.
 
 ```js
 // This tiny function saved me from so much pain:
@@ -122,4 +126,6 @@ Shoutout to [Frontend Mentor](https://www.frontendmentor.io/) for consistently p
 
 Big thanks to the [Open-Meteo](https://open-meteo.com/) team for giving us free weather APIs without the usual "sign up for our enterprise plan" nonsense. You're the real MVPs.
 
-And finally, thanks to coffee ☕ for making this all possible. 
+Massive props to [Cursor](https://cursor.com/) for being the AI coding assistant that made this possible. We vibed, we coded, we shipped. This is what pair programming looks like in 2025. 🤝🤖
+
+And finally, thanks to coffee ☕ for keeping me conscious during those "just one more feature" sessions. 
