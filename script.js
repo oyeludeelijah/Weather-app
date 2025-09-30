@@ -169,14 +169,28 @@ document.addEventListener('DOMContentLoaded', function() {
       todayDateEl.textContent = formatter.format(d);
     }
 
-    // Daily highs/lows (7)
+    // Daily highs/lows + labels + icons (7)
     if (data.daily) {
       const highs = data.daily.temperature_2m_max || [];
       const lows = data.daily.temperature_2m_min || [];
+      const dates = data.daily.time || [];
+      const codes = data.daily.weather_code || [];
       const listEls = document.querySelectorAll('.daily-item');
+      const dayFmt = new Intl.DateTimeFormat(undefined, { weekday: 'short' });
       listEls.forEach((item, idx) => {
         const high = highs[idx];
         const low = lows[idx];
+        const dateStr = dates[idx];
+        const code = codes[idx];
+        if (dateStr) {
+          const dayEl = item.querySelector('.daily-item__day');
+          if (dayEl) dayEl.textContent = dayFmt.format(new Date(dateStr));
+        }
+        if (typeof code !== 'undefined') {
+          const iconEl = item.querySelector('.daily-item__icon');
+          const mapped = mapWeatherCodeToIcon(Number(code));
+          if (iconEl) { iconEl.src = mapped.src; iconEl.alt = mapped.alt; }
+        }
         if (high != null && low != null) {
           const highEl = item.querySelector('.daily-item__high');
           const lowEl = item.querySelector('.daily-item__low');
@@ -648,7 +662,7 @@ document.addEventListener('DOMContentLoaded', function() {
         longitude: String(longitude),
         current: ['temperature_2m','relative_humidity_2m','precipitation','wind_speed_10m','apparent_temperature','weather_code'].join(','),
         hourly: ['temperature_2m'].join(','),
-        daily: ['temperature_2m_max','temperature_2m_min','precipitation_sum','wind_speed_10m_max'].join(','),
+        daily: ['temperature_2m_max','temperature_2m_min','precipitation_sum','wind_speed_10m_max','weather_code'].join(','),
         timezone: 'auto'
       });
 

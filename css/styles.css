@@ -496,16 +496,16 @@ body {
 
 /* Hourly Forecast */
   .hourly-forecast {
-  background-color: var(--neutral-800);
-  border: 1px solid var(--neutral-700);
-  border-radius: 1rem;
-  padding: 1.6rem;
+    background-color: var(--neutral-800);
+    border: 1px solid var(--neutral-700);
+    border-radius: 1rem;
+    padding: 1.6rem;
   max-height: 75rem;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
 
 .hourly-forecast__list {
   overflow-y: auto;

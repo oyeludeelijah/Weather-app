@@ -1,22 +1,27 @@
-# Frontend Mentor - Weather app
+# Frontend Mentor - Weather app solution
 
-![Design preview for the Weather app coding challenge](./preview.jpg)
+This is my take on the [Weather app challenge on Frontend Mentor](https://www.frontendmentor.io/challenges/weather-app-K1FhddVm49). Spoiler alert: I may have gotten a little carried away with the unit conversion system. But hey, now you can switch between Celsius and Fahrenheit faster than the weather changes in spring! 🌦️
 
-## Welcome! 👋
+## Table of contents
 
-Thanks for checking out this front-end coding challenge.
+- [Overview](#overview)
+  - [The challenge](#the-challenge)
+  - [Screenshot](#screenshot)
+  - [Links](#links)
+- [Getting started](#getting-started)
+- [My process](#my-process)
+  - [Built with](#built-with)
+  - [What I learned](#what-i-learned)
+  - [Continued development](#continued-development)
+  - [Useful resources](#useful-resources)
+- [Author](#author)
+- [Acknowledgments](#acknowledgments)
 
-[Frontend Mentor](https://www.frontendmentor.io) challenges help you improve your coding skills by building realistic projects.
+## Overview
 
-**To do this challenge, you need a good understanding of HTML, CSS and JavaScript.**
+### The challenge
 
-## The challenge
-
-Your challenge is to build out this weather app using the [Open-Meteo API](https://open-meteo.com/) and get it looking as close to the design as possible.
-
-You can use any tools you like to help you complete the challenge. So if you've got something you'd like to practice, feel free to give it a go.
-
-Your users should be able to:
+Users should be able to:
 
 - Search for weather information by entering a location in the search bar
 - View current weather conditions including temperature, weather icon, and location details
@@ -29,74 +34,92 @@ Your users should be able to:
 - View the optimal layout for the interface depending on their device's screen size
 - See hover and focus states for all interactive elements on the page
 
-Want some support on the challenge? [Join our community](https://www.frontendmentor.io/community) and ask questions in the **#help** channel.
+### Screenshot
 
-## Where to find everything
+![Design preview](./preview.jpg)
 
-Your task is to build out the project to the designs inside the `/design` folder. You will find both a mobile and a desktop version of the design. 
+### Links
 
-The designs are in JPG static format. Using JPGs will mean that you'll need to use your best judgment for styles such as `font-size`, `padding` and `margin`. 
+- Solution URL: [Add solution URL here](https://your-solution-url.com)
+- Live Site URL: [Add live site URL here](https://your-live-site-url.com)
 
-If you would like the Figma design file to gain experience using professional tools and build more accurate projects faster, you can [subscribe as a PRO member](https://www.frontendmentor.io/pro).
+## Getting started
 
-All the required assets for this project are in the `/assets` folder. The images are already exported for the correct screen size and optimized.
+No build process, no npm install hell, no "it works on my machine" excuses. Just good old-fashioned HTML, CSS, and JavaScript.
 
-We also include variable and static font files for the required fonts for this project. You can choose to either link to Google Fonts or use the local font files to host the fonts yourself. Note that we've removed the static font files for the font weights that aren't needed for this project.
+**To run it:**
+- Double-click `index.html` like it's 2005 (and it'll work just fine!)
+- Or if you're fancy: use VS Code Live Server or `npx serve`
 
-There is also a `style-guide.md` file containing the information you'll need, such as color palette and fonts.
+**No API keys needed!** 🎉  
+I'm using the completely free [Open-Meteo APIs](https://open-meteo.com/). Those folks are absolute legends for providing free weather data without making you sell your soul (or email) first.
 
-## Building your project
+## My process
 
-Feel free to use any workflow that you feel comfortable with. Below is a suggested process, but do not feel like you need to follow these steps:
+### Built with
 
-1. Initialize your project as a public repository on [GitHub](https://github.com/). Creating a repo will make it easier to share your code with the community if you need help. If you're not sure how to do this, [have a read-through of this Try Git resource](https://try.github.io/).
-2. Configure your repository to publish your code to a web address. This will also be useful if you need some help during a challenge as you can share the URL for your project with your repo URL. There are a number of ways to do this, and we provide some recommendations below.
-3. Look through the designs to start planning out how you'll tackle the project. This step is crucial to help you think ahead for CSS classes to create reusable styles.
-4. Before adding any styles, structure your content with HTML. Writing your HTML first can help focus your attention on creating well-structured content.
-5. Write out the base styles for your project, including general content styles, such as `font-family` and `font-size`.
-6. Start adding styles to the top of the page and work down. Only move on to the next section once you're happy you've completed the area you're working on.
+**The classics:**
+- Semantic HTML5 (with ARIA roles because accessibility matters!)
+- CSS custom properties, Flexbox, and Grid (the holy trinity)
+- Mobile-first workflow (because let's be real, everyone checks the weather on their phone)
 
-## Deploying your project
+**Vanilla JavaScript** (no frameworks were harmed in the making of this app):
+- Fetch API + AbortController (so your rapid typing doesn't crash the geocoding API)
+- Geolocation API (for when you're too lazy to type your city name)
+- localStorage (remembers your preferences like that one friend who remembers your coffee order)
+- Intl.DateTimeFormat (because dates are hard and I'm not writing my own formatter)
 
-As mentioned above, there are many ways to host your project for free. Our recommend hosts are:
+**APIs:**
+- Open-Meteo Geocoding API (finds your city)
+- Open-Meteo Forecast API (tells you if you need an umbrella)
 
-- [GitHub Pages](https://pages.github.com/)
-- [Vercel](https://vercel.com/)
-- [Netlify](https://www.netlify.com/)
+### What I learned
 
-You can host your site using one of these solutions or any of our other trusted providers. [Read more about our recommended and trusted hosts](https://medium.com/frontend-mentor/frontend-mentor-trusted-hosting-providers-bf000dfebe).
+**The hard way:**
+- If you keep converting temperature values back and forth between Celsius and Fahrenheit by reading them from the DOM, you'll end up with numbers that make absolutely no sense. Solution? Keep a "canonical state" in metric and convert on render. Mind = blown. 🤯
 
-## Create a custom `README.md`
+- `AbortController` is a lifesaver when users type faster than your API can respond. Without it, you get a beautiful race condition where "New York" shows weather for "New" instead. Ask me how I know.
 
-We strongly recommend overwriting this `README.md` with a custom one. We've provided a template inside the [`README-template.md`](./README-template.md) file in this starter code.
+- ARIA roles aren't just fancy attributes to make your HTML look smart. Turns out screen reader users actually need them! Who knew? (Everyone. Everyone knew. I learned this the hard way.)
 
-The template provides a guide for what to add. A custom `README` will help you explain your project and reflect on your learnings. Please feel free to edit our template as much as you like.
+- Weather codes from Open-Meteo are just numbers (like 0, 45, 95). Mapping those to actual icons? That's where the real detective work began. Pro tip: 95 = thunderstorm, not a sunny day. ⛈️
 
-Once you've added your information to the template, delete this file and rename the `README-template.md` file to `README.md`. That will make it show up as your repository's README file.
+```js
+// This tiny function saved me from so much pain:
+function formatTemperatureC(valueC) {
+  return units.temperature === 'fahrenheit' 
+    ? celsiusToFahrenheit(valueC) + '°' 
+    : Math.round(valueC) + '°';
+}
+```
 
-## Submitting your solution
+### Continued development
 
-Submit your solution on the platform for the rest of the community to see. Follow our ["Complete guide to submitting solutions"](https://medium.com/frontend-mentor/a-complete-guide-to-submitting-solutions-on-frontend-mentor-ac6384162248) for tips on how to do this.
+**Things I'll probably add when I have time (read: never):**
+- Full WAI-ARIA keyboard navigation that would make accessibility experts weep tears of joy
+- Fancy loading skeletons instead of just showing "..." (I know, I know, it's basic)
+- A full 24-hour hourly view because apparently 8 hours isn't enough for some people
+- Precipitation and wind overlays (for the weather nerds out there)
+- Maybe a "surprise me" button that shows weather for a random city? Because why not.
 
-Remember, if you're looking for feedback on your solution, be sure to ask questions when submitting it. The more specific and detailed you are with your questions, the higher the chance you'll get valuable feedback from the community.
+### Useful resources
 
-## Sharing your solution
+**Lifesavers:**
+- [Open-Meteo Docs](https://open-meteo.com/en/docs) - Seriously well-documented API. No authentication BS. Just clean, free weather data. 10/10 would recommend.
+- [MDN AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController) - Taught me how to stop being a terrible person who floods APIs with requests.
+- [WAI-ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/) - The bible for making custom components accessible. Heavy reading but worth it.
+- [MDN Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat) - Because I refuse to write another date formatter from scratch. Never again.
 
-There are multiple places you can share your solution:
+## Author
 
-1. Share your solution page in the **#finished-projects** channel of our [community](https://www.frontendmentor.io/community). 
-2. Tweet [@frontendmentor](https://twitter.com/frontendmentor) and mention **@frontendmentor**, including the repo and live URLs in the tweet. We'd love to take a look at what you've built and help share it around.
-3. Share your solution on other social channels like LinkedIn.
-4. Blog about your experience building your project. Writing about your workflow, technical choices, and talking through your code is a brilliant way to reinforce what you've learned. Great platforms to write on are [dev.to](https://dev.to/), [Hashnode](https://hashnode.com/), and [CodeNewbie](https://community.codenewbie.org/).
+- Website - [Add your name here](https://www.your-site.com)
+- Frontend Mentor - [@yourusername](https://www.frontendmentor.io/profile/yourusername)
+- Twitter - [@yourusername](https://www.twitter.com/yourusername)
 
-We provide templates to help you share your solution once you've submitted it on the platform. Please do edit them and include specific questions when you're looking for feedback. 
+## Acknowledgments
 
-The more specific you are with your questions the more likely it is that another member of the community will give you feedback.
+Shoutout to [Frontend Mentor](https://www.frontendmentor.io/) for consistently providing challenges that make me question my life choices at 2 AM. 
 
-## Got feedback for us?
+Big thanks to the [Open-Meteo](https://open-meteo.com/) team for giving us free weather APIs without the usual "sign up for our enterprise plan" nonsense. You're the real MVPs.
 
-We love receiving feedback! We're always looking to improve our challenges and our platform. So if you have anything you'd like to mention, please email hi[at]frontendmentor[dot]io.
-
-This challenge is completely free. Please share it with anyone who will find it useful for practice.
-
-**Have fun building!** 🚀
+And finally, thanks to coffee ☕ for making this all possible. 
