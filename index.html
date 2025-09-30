@@ -14,14 +14,14 @@
     </div>
     
     <div class="header__units">
-      <button class="units-toggle" aria-label="Switch temperature units">
+      <button class="units-toggle" aria-label="Switch temperature units" aria-controls="units-dropdown" aria-expanded="false">
         <img src="./assets/images/icon-units.svg" alt="" class="units-toggle__icon">
         <span class="units-toggle__text">Units</span>
         <img src="./assets/images/icon-dropdown.svg" alt="" class="units-toggle__dropdown">
       </button>
       
       <!-- Units dropdown -->
-      <div class="units-dropdown" hidden>
+      <div class="units-dropdown" id="units-dropdown" role="listbox" hidden>
         <div class="units-dropdown__content">
           <h3 class="units-dropdown__title">Units</h3>
           <p class="units-dropdown__subtitle">Switch to Imperial/Metric</p>
@@ -30,11 +30,11 @@
           
           <div class="units-dropdown__section">
             <h4>Temperature</h4>
-            <label>
+            <label role="option" aria-selected="true">
               <input type="radio" name="temperature" value="celsius" checked>
               <span>Celsius (°C)</span>
             </label>
-            <label>
+            <label role="option" aria-selected="false">
               <input type="radio" name="temperature" value="fahrenheit">
               <span>Fahrenheit (°F)</span>
             </label>
@@ -42,11 +42,11 @@
           
           <div class="units-dropdown__section">
             <h4>Wind Speed</h4>
-            <label>
+            <label role="option" aria-selected="true">
               <input type="radio" name="wind" value="kmh" checked>
               <span>km/h</span>
             </label>
-            <label>
+            <label role="option" aria-selected="false">
               <input type="radio" name="wind" value="mph">
               <span>mph</span>
             </label>
@@ -54,11 +54,11 @@
           
           <div class="units-dropdown__section">
             <h4>Precipitation</h4>
-            <label>
+            <label role="option" aria-selected="true">
               <input type="radio" name="precipitation" value="mm" checked>
               <span>Millimeters (mm)</span>
             </label>
-            <label>
+            <label role="option" aria-selected="false">
               <input type="radio" name="precipitation" value="in">
               <span>Inches (in)</span>
             </label>
@@ -78,11 +78,12 @@
             type="text" 
             placeholder="Search for a place..."
             class="search-form__input"
+            role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="search-listbox"
           >
           
           <!-- Search dropdown -->
           <div class="search-dropdown" hidden>
-            <div class="search-dropdown__content">
+            <div class="search-dropdown__content" id="search-listbox" role="listbox" aria-label="Search suggestions">
               <div class="search-dropdown__option">
                 <span>New York, NY</span>
               </div>
@@ -126,19 +127,19 @@
           <div class="weather-metrics">
             <div class="metric-card">
               <span class="metric-card__label">Feels Like</span>
-              <span class="metric-card__value">18°</span>
+              <span class="metric-card__value" data-kind="feels">18°</span>
             </div>
             <div class="metric-card">
               <span class="metric-card__label">Humidity</span>
-              <span class="metric-card__value">46%</span>
+              <span class="metric-card__value" data-kind="humidity">46%</span>
             </div>
             <div class="metric-card">
               <span class="metric-card__label">Wind</span>
-              <span class="metric-card__value">14 km/h</span>
+              <span class="metric-card__value" data-kind="wind">14 km/h</span>
             </div>
             <div class="metric-card">
               <span class="metric-card__label">Precipitation</span>
-              <span class="metric-card__value">0 mm</span>
+              <span class="metric-card__value" data-kind="precip">0 mm</span>
             </div>
           </div>
 
@@ -211,33 +212,33 @@
           <div class="hourly-forecast__header">
             <h3 class="hourly-forecast__title">Hourly forecast</h3>
             <div class="hourly-forecast__day-selector-container">
-              <button class="hourly-forecast__day-selector">
-                Tuesday
-                <img src="./assets/images/icon-dropdown.svg" alt="" class="hourly-forecast__dropdown">
-              </button>
+            <button class="hourly-forecast__day-selector">
+              Tuesday
+              <img src="./assets/images/icon-dropdown.svg" alt="" class="hourly-forecast__dropdown">
+            </button>
               
               <!-- Day selector dropdown -->
               <div class="day-selector-dropdown" hidden>
-                <div class="day-selector-dropdown__content">
-                  <div class="day-selector-dropdown__option">
+                <div class="day-selector-dropdown__content" id="day-listbox" role="listbox" aria-label="Select day">
+                  <div class="day-selector-dropdown__option" role="option" aria-selected="false">
                     <span>Monday</span>
                   </div>
-                  <div class="day-selector-dropdown__option">
+                  <div class="day-selector-dropdown__option" role="option" aria-selected="false">
                     <span>Tuesday</span>
                   </div>
-                  <div class="day-selector-dropdown__option">
+                  <div class="day-selector-dropdown__option" role="option" aria-selected="false">
                     <span>Wednesday</span>
                   </div>
-                  <div class="day-selector-dropdown__option">
+                  <div class="day-selector-dropdown__option" role="option" aria-selected="false">
                     <span>Thursday</span>
                   </div>
-                  <div class="day-selector-dropdown__option">
+                  <div class="day-selector-dropdown__option" role="option" aria-selected="false">
                     <span>Friday</span>
                   </div>
-                  <div class="day-selector-dropdown__option">
+                  <div class="day-selector-dropdown__option" role="option" aria-selected="false">
                     <span>Saturday</span>
                   </div>
-                  <div class="day-selector-dropdown__option">
+                  <div class="day-selector-dropdown__option" role="option" aria-selected="false">
                     <span>Sunday</span>
                   </div>
                 </div>
