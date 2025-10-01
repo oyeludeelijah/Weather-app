@@ -69,6 +69,20 @@
   </header>
 
   <main class="main">
+    <!-- Error State (hidden by default) -->
+    <section class="error-state" hidden aria-live="polite" aria-atomic="true">
+      <div class="error-state__content">
+        <div class="error-state__icon" aria-hidden="true">
+          <img src="./assets/images/icon-error.svg" alt="" class="error-state__icon-img">
+        </div>
+        <h1 class="error-state__title">Something went wrong</h1>
+        <p class="error-state__message">We couldn’t connect to the server (API error). Please try again in a few moments.</p>
+        <button class="error-state__retry" type="button" aria-label="Retry loading weather">
+          <img src="./assets/images/icon-retry.svg" alt="" class="error-state__retry-icon">
+          <span>Retry</span>
+        </button>
+      </div>
+    </section>
     <section class="search-section">
       <h1 class="search-section__title">How's the sky looking today?</h1>
       <div class="search-form">
@@ -102,8 +116,8 @@
             </div>
           </div>
         </div>
-        <button class="search-form__button" aria-label="Search">
-  Search
+        <button class="search-form__button" aria-label="Refresh weather data">
+  Refresh
         </button>
       </div>
     </section>

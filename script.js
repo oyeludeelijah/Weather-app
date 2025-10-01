@@ -209,6 +209,9 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }
     renderHourlyForDate(appState.selectedDayDate);
+    
+    // Clear loading state after render completes
+    clearLoadingState();
   }
 
   // Build day options list from daily.time and map labels/dates
@@ -495,6 +498,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const searchInput = document.querySelector('.search-form__input');
   const searchDropdown = document.querySelector('.search-dropdown');
   const searchListbox = document.getElementById('search-listbox');
+  const searchButton = document.querySelector('.search-form__button');
   
   // Open-Meteo Geocoding endpoint
   const GEOCODE_ENDPOINT = 'https://geocoding-api.open-meteo.com/v1/search';
@@ -507,6 +511,24 @@ document.addEventListener('DOMContentLoaded', function() {
   function setSearchExpanded(expanded) {
     searchInput.setAttribute('aria-expanded', expanded ? 'true' : 'false');
   }
+
+  // Refresh button functionality - re-fetches weather for current location
+  searchButton.addEventListener('click', async function(e) {
+    e.preventDefault();
+    const lastCity = loadLastCity();
+    if (lastCity && lastCity.lat && lastCity.lon) {
+      // Re-fetch weather for last viewed city
+      await fetchAndRenderWeather(lastCity.lat, lastCity.lon);
+    } else if (navigator.geolocation) {
+      // Try to get current location
+      navigator.geolocation.getCurrentPosition(async (pos) => {
+        await fetchAndRenderWeather(pos.coords.latitude, pos.coords.longitude);
+      }, () => {
+        // Fallback to Berlin if geolocation fails
+        fetchAndRenderWeather(52.52, 13.405);
+      });
+    }
+  });
 
   // Show dropdown when input is focused and has value
   searchInput.addEventListener('focus', function() {
@@ -648,14 +670,72 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
+  // Show loading state
+  function showLoadingState() {
+    // Today card
+    const todayCard = document.querySelector('.today-card');
+    const todayTempEl = document.querySelector('.today-card__temp');
+    if (todayCard) todayCard.classList.add('loading');
+    if (todayTempEl) todayTempEl.textContent = 'Loading…';
+
+    // Metrics - add loading class to parent cards
+    const metricCards = document.querySelectorAll('.metric-card');
+    metricCards.forEach(card => card.classList.add('loading'));
+    
+    const feelsEl = document.querySelector('.metric-card__value[data-kind="feels"]');
+    const humidityEl = document.querySelector('.metric-card__value[data-kind="humidity"]');
+    const windEl = document.querySelector('.metric-card__value[data-kind="wind"]');
+    const precipEl = document.querySelector('.metric-card__value[data-kind="precip"]');
+    if (feelsEl) feelsEl.textContent = '—';
+    if (humidityEl) humidityEl.textContent = '—';
+    if (windEl) windEl.textContent = '—';
+    if (precipEl) precipEl.textContent = '—';
+
+    // Daily forecast
+    const dailyItems = document.querySelectorAll('.daily-item');
+    dailyItems.forEach(item => {
+      item.classList.add('loading');
+      const highEl = item.querySelector('.daily-item__high');
+      const lowEl = item.querySelector('.daily-item__low');
+      if (highEl) highEl.textContent = '—';
+      if (lowEl) lowEl.textContent = '—';
+    });
+
+    // Hourly forecast
+    const hourlyContainers = document.querySelectorAll('.hourly-item-container');
+    hourlyContainers.forEach(container => {
+      container.classList.add('loading');
+      const tempEl = container.querySelector('.hourly-item__temp');
+      if (tempEl) tempEl.textContent = '—';
+    });
+  }
+
+  // Clear loading state
+  function clearLoadingState() {
+    // Remove loading from today card
+    const todayCard = document.querySelector('.today-card');
+    if (todayCard) todayCard.classList.remove('loading');
+    
+    // Remove loading from metric cards
+    const metricCards = document.querySelectorAll('.metric-card');
+    metricCards.forEach(card => card.classList.remove('loading'));
+    
+    // Remove loading from daily items
+    const dailyItems = document.querySelectorAll('.daily-item');
+    dailyItems.forEach(item => item.classList.remove('loading'));
+
+    // Remove loading from hourly items
+    const hourlyContainers = document.querySelectorAll('.hourly-item-container');
+    hourlyContainers.forEach(container => container.classList.remove('loading'));
+  }
+
   async function fetchAndRenderWeather(latitude, longitude) {
     try {
       if (forecastController) forecastController.abort();
       forecastController = new AbortController();
 
-      // Simple loading state
-      const todayTempEl = document.querySelector('.today-card__temp');
-      if (todayTempEl) todayTempEl.textContent = '…';
+      // Show loading placeholders
+      showLoadingState();
 
       const params = new URLSearchParams({
         latitude: String(latitude),
@@ -680,10 +760,41 @@ document.addEventListener('DOMContentLoaded', function() {
     } catch (err) {
       if (err.name !== 'AbortError') {
         console.error('Forecast error:', err);
-        const todayTempEl = document.querySelector('.today-card__temp');
-        if (todayTempEl) todayTempEl.textContent = '--';
+        
+        // Show error state (keep header visible, hide main app sections)
+        const errorSection = document.querySelector('.error-state');
+        const mainSections = document.querySelectorAll('.search-section, .weather-content');
+        if (errorSection) errorSection.hidden = false;
+        mainSections.forEach(s => s.hidden = true);
+        
+        // Clear loading indicators
+        clearLoadingState();
       }
     }
+  }
+
+  // Retry button handler
+  const retryBtn = document.querySelector('.error-state__retry');
+  if (retryBtn) {
+    retryBtn.addEventListener('click', async () => {
+      const errorSection = document.querySelector('.error-state');
+      const mainSections = document.querySelectorAll('.search-section, .weather-content');
+      if (errorSection) errorSection.hidden = true;
+      mainSections.forEach(s => s.hidden = false);
+
+      const lastCity = loadLastCity();
+      if (lastCity && lastCity.lat && lastCity.lon) {
+        await fetchAndRenderWeather(lastCity.lat, lastCity.lon);
+      } else if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(async (pos) => {
+          await fetchAndRenderWeather(pos.coords.latitude, pos.coords.longitude);
+        }, async () => {
+          await fetchAndRenderWeather(52.52, 13.405);
+        });
+      } else {
+        await fetchAndRenderWeather(52.52, 13.405);
+      }
+    });
   }
 
   // Persistence helpers

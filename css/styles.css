@@ -152,6 +152,69 @@ body {
   box-sizing: border-box;
 }
 
+/* Error State */
+.error-state[hidden] { display: none; }
+
+.error-state {
+  min-height: calc(100vh - 80px);
+  display: flex;
+  /* align-items: center; */
+  justify-content: center;
+  text-align: center;
+}
+
+.error-state__content {
+  max-width: 56rem;
+  padding: 2.4rem;
+}
+
+.error-state__icon {
+  margin-bottom: 1.6rem;
+}
+
+.error-state__icon-img {
+  width: 2.8rem;
+  height: 2.8rem;
+  opacity: 0.8;
+}
+
+.error-state__title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 700;
+  font-size: clamp(2.6rem, 5vw, 3.6rem);
+  margin-bottom: 1.2rem;
+}
+
+.error-state__message {
+  color: var(--neutral-200);
+  margin-bottom: 1.8rem;
+  max-width: 44rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.error-state__retry {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.8rem 1.2rem;
+  background-color: transparent;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 0.6rem;
+  color: var(--neutral-0);
+  cursor: pointer;
+}
+
+.error-state__retry:hover {
+  background-color: rgba(255,255,255,0.08);
+}
+
+.error-state__retry-icon {
+  width: 1rem;
+  height: 1rem;
+  opacity: 0.9;
+}
+
 .search-section {
   text-align: center;
   padding: 2.8rem 0 0.5rem 0;
@@ -924,6 +987,58 @@ body {
 /* Position dropdown relative to header units */
 .header__units {
   position: relative;
+}
+
+/* Loading States */
+.loading-placeholder {
+  color: var(--neutral-300);
+  opacity: 0.6;
+}
+
+.loading-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--neutral-700) 25%,
+    var(--neutral-600) 50%,
+    var(--neutral-700) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.7; }
+}
+
+/* Today card loading state */
+.today-card.loading {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.today-card.loading .today-card__icon {
+  opacity: 0.3;
+}
+
+/* Daily and hourly loading states */
+.daily-item.loading,
+.hourly-item-container.loading {
+  opacity: 0.5;
+}
+
+.daily-item.loading .daily-item__icon,
+.hourly-item-container.loading .hourly-item__icon {
+  opacity: 0.3;
+}
+
+/* Metric cards loading state */
+.metric-card.loading {
+  animation: pulse 1.5s ease-in-out infinite;
 }
 
 /* Day Selector Dropdown */

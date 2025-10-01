@@ -36,12 +36,12 @@ Users should be able to:
 
 ### Screenshot
 
-![Design preview](./preview.jpg)
+![Design preview](./Screenshot%20(106).png)
 
 ### Links
 
-- Solution URL: [Add solution URL here](https://your-solution-url.com)
-- Live Site URL: [Add live site URL here](https://your-live-site-url.com)
+- Solution URL: [Solution link here](https://github.com/oyeludeelijah/Weather-app.git)
+- Live Site URL: [live site here](https://weather-app-mu-rose.vercel.app/)
 
 ## Getting started
 
@@ -113,12 +113,6 @@ function formatTemperatureC(valueC) {
 - [MDN AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController) - Taught me how to stop being a terrible person who floods APIs with requests.
 - [WAI-ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/) - The bible for making custom components accessible. Heavy reading but worth it.
 - [MDN Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat) - Because I refuse to write another date formatter from scratch. Never again.
-
-## Author
-
-- Website - [Add your name here](https://www.your-site.com)
-- Frontend Mentor - [@yourusername](https://www.frontendmentor.io/profile/yourusername)
-- Twitter - [@yourusername](https://www.twitter.com/yourusername)
 
 ## Acknowledgments
 
