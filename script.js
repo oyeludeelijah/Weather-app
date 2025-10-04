@@ -133,6 +133,17 @@ document.addEventListener('DOMContentLoaded', function() {
     };
   }
 
+  // Utility: get today's date string (YYYY-MM-DD) in API timezone
+  function getApiTodayDateString(apiData) {
+    try {
+      const offset = Number(apiData.utc_offset_seconds || 0);
+      const ms = Date.now() + offset * 1000;
+      return new Date(ms).toISOString().slice(0, 10);
+    } catch {
+      return new Date().toISOString().slice(0, 10);
+    }
+  }
+
   // Main render using canonical metric data
   function renderAll() {
     const data = appState.metricData;
@@ -163,8 +174,11 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }
 
-    if (todayDateEl && data.daily && data.daily.time && data.daily.time[0]) {
-      const d = new Date(data.daily.time[0]);
+    if (todayDateEl && data.daily && data.daily.time && data.daily.time.length) {
+      const apiToday = getApiTodayDateString(data);
+      const idx = data.daily.time.indexOf(apiToday);
+      const dateToShow = idx >= 0 ? data.daily.time[idx] : data.daily.time[0];
+      const d = new Date(dateToShow);
       const formatter = new Intl.DateTimeFormat(undefined, { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' });
       todayDateEl.textContent = formatter.format(d);
     }
@@ -203,9 +217,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Prepare day options from daily.time and render hourly for selected day
     setupDayOptionsFromDaily();
     if (!appState.selectedDayDate) {
-      // default to first daily date
-      if (appState.metricData && appState.metricData.daily && appState.metricData.daily.time && appState.metricData.daily.time[0]) {
-        appState.selectedDayDate = String(appState.metricData.daily.time[0]);
+      // default to API timezone "today" when available
+      const apiToday = getApiTodayDateString(data);
+      if (data.daily && data.daily.time && data.daily.time.includes(apiToday)) {
+        appState.selectedDayDate = apiToday;
+      } else if (data.daily && data.daily.time && data.daily.time[0]) {
+        appState.selectedDayDate = String(data.daily.time[0]);
       }
     }
     renderHourlyForDate(appState.selectedDayDate);
@@ -752,9 +769,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
       // Save canonical metric data and render
       appState.metricData = data;
-      // Default selected day to first if not set
-      if (!appState.selectedDayDate && data.daily && data.daily.time && data.daily.time[0]) {
-        appState.selectedDayDate = String(data.daily.time[0]);
+      // Sync selected day to API timezone today when possible
+      const apiToday = getApiTodayDateString(data);
+      if (data.daily && data.daily.time && data.daily.time.includes(apiToday)) {
+        appState.selectedDayDate = apiToday;
       }
       renderAll();
     } catch (err) {
